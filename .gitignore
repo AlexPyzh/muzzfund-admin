@@ -1,0 +1,169 @@
+# =========================
+# Flutter & Dart
+# =========================
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/ServiceDefinitions.json
+flutter_export_environment.sh
+
+# Remove generated plugin symlinks
+ios/.symlinks/
+android/.gradle/
+android/.idea/
+android/app/.cxx/
+
+# =========================
+# IDEs & Editors
+# =========================
+
+# VS Code
+.vscode/
+.history/
+*.code-workspace
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
+# Xcode
+*.xcworkspace
+xcuserdata/
+DerivedData/
+*.xccheckout
+*.xcodeproj/*.pbxuser
+*.xcodeproj/xcuserdata/
+*.moved-aside
+*.xcuserstate
+*.xcuserdatad
+*.xcscmblueprint
+
+# =========================
+# Platform Specific
+# =========================
+
+# Android
+.gradle/
+local.properties
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+**/android/key.properties
+**/android/.cxx/
+**/android/app/.cxx/
+
+# iOS
+**/ios
+Pods/
+Podfile.lock
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/.symlinks
+**/ios/Flutter/App.framework
+**/ios/Flutter/engine/
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Runner/GeneratedPluginRegistrant.swift
+**/ios/Runner.xcodeproj/project.xcworkspace/
+**/ios/Runner.xcodeproj/xcuserdata/
+
+# macOS
+**/macos
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+**/macos/Flutter/ephemeral/
+**/macos/Pods/
+**/macos/Podfile.lock
+
+# Windows
+**/windows
+**/windows/flutter/ephemeral/
+**/windows/GeneratedPluginRegistrant.*
+**/windows/Runner/GeneratedPluginRegistrant.*
+
+# Linux
+**/linux
+**/linux/flutter/ephemeral/
+**/linux/GeneratedPluginRegistrant.*
+
+# Web
+lib/generated_plugin_registrant.dart
+**/build/web/
+
+# =========================
+# Environment & Secrets
+# =========================
+.env
+.env.*
+*.keystore
+*.jks
+*.pem
+*.p12
+*.key
+*.cer
+*.crt
+*.der
+*.pfx
+*.mobileprovision
+*.xcconfig
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# =========================
+# System Files
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# =========================
+# Logs & Temp
+# =========================
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.old
+
+# =========================
+# Firebase / Analytics
+# =========================
+google-services.json
+GoogleService-Info.plist
+firebase_app_id_file.json
+
+# =========================
+# Testing & Coverage
+# =========================
+coverage/
+test-output/
+test-results/
+*.coverage
+*.lcov
+
+# =========================
+# Packages & Distribution
+# =========================
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+
+# =========================
+# Custom Project Exclusions
+# ============
