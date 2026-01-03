@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:muzzfund_admin/config/api_config.dart';
 import 'package:muzzfund_admin/models/admin_user.dart';
 import 'package:muzzfund_admin/models/admin_track.dart';
+import 'package:muzzfund_admin/models/admin_comment.dart';
 import 'package:muzzfund_admin/models/statistics.dart';
 
 class AdminClient {
@@ -384,6 +385,150 @@ class AdminClient {
     } catch (e) {
       if (kDebugMode) print('Export report error: $e');
       return null;
+    }
+  }
+
+  // ==================== Comments ====================
+
+  Future<Map<String, dynamic>> getComments({
+    int page = 1,
+    int pageSize = 20,
+    String? search,
+    CommentStatus? status,
+    int? trackId,
+    int? userId,
+    bool? hasReports,
+    String sortBy = 'newest',
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.commentsUrl,
+        queryParameters: {
+          'page': page,
+          'pageSize': pageSize,
+          if (search != null && search.isNotEmpty) 'search': search,
+          if (status != null) 'status': status.index,
+          if (trackId != null) 'trackId': trackId,
+          if (userId != null) 'userId': userId,
+          if (hasReports != null) 'hasReports': hasReports,
+          'sortBy': sortBy,
+        },
+      );
+      final data = response.data['data'] ?? response.data;
+      final comments = (data['comments'] as List?)
+              ?.map((json) => AdminComment.fromJson(json))
+              .toList() ??
+          [];
+      return {
+        'comments': comments,
+        'totalCount': data['totalCount'] ?? 0,
+        'page': data['page'] ?? page,
+        'pageSize': data['pageSize'] ?? pageSize,
+      };
+    } catch (e) {
+      if (kDebugMode) print('Get comments error: $e');
+      rethrow;
+    }
+  }
+
+  Future<AdminCommentDetail> getCommentById(int id) async {
+    try {
+      final response = await _dio.get(ApiConfig.commentByIdUrl(id));
+      final data = response.data['data'] ?? response.data;
+      return AdminCommentDetail.fromJson(data);
+    } catch (e) {
+      if (kDebugMode) print('Get comment by id error: $e');
+      rethrow;
+    }
+  }
+
+  Future<bool> updateCommentStatus(int id, CommentStatus status) async {
+    try {
+      await _dio.put(
+        ApiConfig.commentStatusUrl(id),
+        data: {'status': status.index},
+      );
+      return true;
+    } catch (e) {
+      if (kDebugMode) print('Update comment status error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> deleteComment(int id, {bool permanent = false}) async {
+    try {
+      await _dio.delete(
+        ApiConfig.commentByIdUrl(id),
+        queryParameters: {'permanent': permanent},
+      );
+      return true;
+    } catch (e) {
+      if (kDebugMode) print('Delete comment error: $e');
+      return false;
+    }
+  }
+
+  Future<Map<String, dynamic>> getReports({
+    int page = 1,
+    int pageSize = 20,
+    ReportStatus? status,
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.reportsUrl,
+        queryParameters: {
+          'page': page,
+          'pageSize': pageSize,
+          if (status != null) 'status': status.index,
+        },
+      );
+      final data = response.data['data'] ?? response.data;
+      final reports = (data['reports'] as List?)
+              ?.map((json) => AdminReport.fromJson(json))
+              .toList() ??
+          [];
+      return {
+        'reports': reports,
+        'totalCount': data['totalCount'] ?? 0,
+        'page': data['page'] ?? page,
+        'pageSize': data['pageSize'] ?? pageSize,
+      };
+    } catch (e) {
+      if (kDebugMode) print('Get reports error: $e');
+      rethrow;
+    }
+  }
+
+  Future<bool> handleReport(
+    int reportId, {
+    required bool dismiss,
+    bool deleteComment = false,
+    bool rejectComment = false,
+  }) async {
+    try {
+      await _dio.post(
+        ApiConfig.handleReportUrl(reportId),
+        data: {
+          'dismiss': dismiss,
+          'deleteComment': deleteComment,
+          'rejectComment': rejectComment,
+        },
+      );
+      return true;
+    } catch (e) {
+      if (kDebugMode) print('Handle report error: $e');
+      return false;
+    }
+  }
+
+  Future<AdminCommentsStats> getCommentsStats() async {
+    try {
+      final response = await _dio.get(ApiConfig.commentsStatsUrl);
+      final data = response.data['data'] ?? response.data;
+      return AdminCommentsStats.fromJson(data);
+    } catch (e) {
+      if (kDebugMode) print('Get comments stats error: $e');
+      return AdminCommentsStats();
     }
   }
 }

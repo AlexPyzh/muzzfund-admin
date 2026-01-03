@@ -5,6 +5,7 @@ import 'package:muzzfund_admin/screens/dashboard_shell.dart';
 import 'package:muzzfund_admin/screens/statistics_screen.dart';
 import 'package:muzzfund_admin/screens/users_screen.dart';
 import 'package:muzzfund_admin/screens/tracks_screen.dart';
+import 'package:muzzfund_admin/screens/comments_screen.dart';
 import 'package:muzzfund_admin/screens/user_detail_screen.dart';
 import 'package:muzzfund_admin/screens/track_detail_screen.dart';
 
@@ -60,6 +61,10 @@ class AppRouter {
                 final trackId = int.parse(state.pathParameters['id']!);
                 return TrackDetailScreen(trackId: trackId);
               },
+            ),
+            GoRoute(
+              path: '/comments',
+              builder: (context, state) => const CommentsScreen(),
             ),
           ],
         ),

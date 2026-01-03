@@ -32,6 +32,11 @@ class _DashboardShellState extends State<DashboardShell> {
       label: 'Tracks',
       path: '/tracks',
     ),
+    _NavItem(
+      icon: Icons.comment,
+      label: 'Comments',
+      path: '/comments',
+    ),
   ];
 
   @override

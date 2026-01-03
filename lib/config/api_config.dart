@@ -13,6 +13,7 @@ class ApiConfig {
   static const String adminUsers = '$apiPath/AdminUsers';
   static const String adminTracks = '$apiPath/AdminTracks';
   static const String adminStatistics = '$apiPath/AdminStatistics';
+  static const String adminComments = '$apiPath/AdminComments';
 
   // Full URLs
   static String get fullBaseUrl => baseUrl;
@@ -41,4 +42,12 @@ class ApiConfig {
   static String get statisticsUserEngagementUrl => '$fullBaseUrl$adminStatistics/user-engagement';
   static String get statisticsTimeSeriesUrl => '$fullBaseUrl$adminStatistics/time-series';
   static String get statisticsExportUrl => '$fullBaseUrl$adminStatistics/export';
+
+  // Comments
+  static String get commentsUrl => '$fullBaseUrl$adminComments';
+  static String commentByIdUrl(int id) => '$fullBaseUrl$adminComments/$id';
+  static String commentStatusUrl(int id) => '$fullBaseUrl$adminComments/$id/status';
+  static String get reportsUrl => '$fullBaseUrl$adminComments/reports';
+  static String handleReportUrl(int reportId) => '$fullBaseUrl$adminComments/reports/$reportId/handle';
+  static String get commentsStatsUrl => '$fullBaseUrl$adminComments/stats';
 }

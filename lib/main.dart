@@ -4,6 +4,7 @@ import 'package:muzzfund_admin/providers/auth_provider.dart';
 import 'package:muzzfund_admin/providers/users_provider.dart';
 import 'package:muzzfund_admin/providers/tracks_provider.dart';
 import 'package:muzzfund_admin/providers/statistics_provider.dart';
+import 'package:muzzfund_admin/providers/comments_provider.dart';
 import 'package:muzzfund_admin/config/router.dart';
 import 'package:muzzfund_admin/config/theme.dart';
 
@@ -23,6 +24,7 @@ class MuzzFundAdminApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UsersProvider()),
         ChangeNotifierProvider(create: (_) => TracksProvider()),
         ChangeNotifierProvider(create: (_) => StatisticsProvider()),
+        ChangeNotifierProvider(create: (_) => CommentsProvider()),
       ],
       child: Builder(
         builder: (context) {
