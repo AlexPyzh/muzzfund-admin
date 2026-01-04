@@ -4,6 +4,7 @@ import 'package:muzzfund_admin/config/api_config.dart';
 import 'package:muzzfund_admin/models/admin_user.dart';
 import 'package:muzzfund_admin/models/admin_track.dart';
 import 'package:muzzfund_admin/models/admin_comment.dart';
+import 'package:muzzfund_admin/models/admin_investment.dart';
 import 'package:muzzfund_admin/models/statistics.dart';
 
 class AdminClient {
@@ -529,6 +530,242 @@ class AdminClient {
     } catch (e) {
       if (kDebugMode) print('Get comments stats error: $e');
       return AdminCommentsStats();
+    }
+  }
+
+  // ==================== Investments ====================
+
+  Future<Map<String, dynamic>> getInvestments({
+    int page = 1,
+    int pageSize = 20,
+    String? search,
+    String? status,
+    DateTime? startDate,
+    DateTime? endDate,
+    double? minAmount,
+    double? maxAmount,
+    int? trackId,
+    int? userId,
+    String sortBy = 'date',
+    bool sortDescending = true,
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.investmentsUrl,
+        queryParameters: {
+          'page': page,
+          'pageSize': pageSize,
+          if (search != null && search.isNotEmpty) 'search': search,
+          if (status != null) 'status': status,
+          if (startDate != null) 'startDate': startDate.toIso8601String(),
+          if (endDate != null) 'endDate': endDate.toIso8601String(),
+          if (minAmount != null) 'minAmount': minAmount,
+          if (maxAmount != null) 'maxAmount': maxAmount,
+          if (trackId != null) 'trackId': trackId,
+          if (userId != null) 'userId': userId,
+          'sortBy': sortBy,
+          'sortDescending': sortDescending,
+        },
+      );
+      final data = response.data['data'] ?? response.data;
+      final investments = (data['investments'] as List?)
+              ?.map((json) => AdminInvestment.fromJson(json))
+              .toList() ??
+          [];
+      return {
+        'investments': investments,
+        'totalCount': data['totalCount'] ?? 0,
+        'page': data['page'] ?? page,
+        'pageSize': data['pageSize'] ?? pageSize,
+        'totalPages': data['totalPages'] ?? 1,
+      };
+    } catch (e) {
+      if (kDebugMode) print('Get investments error: $e');
+      rethrow;
+    }
+  }
+
+  Future<AdminInvestment> getInvestmentById(int id) async {
+    try {
+      final response = await _dio.get(ApiConfig.investmentByIdUrl(id));
+      final data = response.data['data'] ?? response.data;
+      return AdminInvestment.fromJson(data);
+    } catch (e) {
+      if (kDebugMode) print('Get investment by id error: $e');
+      rethrow;
+    }
+  }
+
+  Future<InvestmentOverview> getInvestmentsOverview() async {
+    try {
+      final response = await _dio.get(ApiConfig.investmentsOverviewUrl);
+      final data = response.data['data'] ?? response.data;
+      return InvestmentOverview.fromJson(data);
+    } catch (e) {
+      if (kDebugMode) print('Get investments overview error: $e');
+      return InvestmentOverview();
+    }
+  }
+
+  Future<List<InvestmentTimeSeries>> getInvestmentsTimeSeries({
+    String period = '30d',
+    String granularity = 'daily',
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.investmentsTimeSeriesUrl,
+        queryParameters: {
+          'period': period,
+          'granularity': granularity,
+        },
+      );
+      final data = response.data['data'] ?? response.data;
+      if (data is List) {
+        return data.map((json) => InvestmentTimeSeries.fromJson(json)).toList();
+      }
+      return [];
+    } catch (e) {
+      if (kDebugMode) print('Get investments time series error: $e');
+      return [];
+    }
+  }
+
+  Future<List<TopInvestedTrack>> getTopInvestedTracks({
+    int limit = 10,
+    String period = 'all',
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.investmentsTopTracksUrl,
+        queryParameters: {
+          'limit': limit,
+          'period': period,
+        },
+      );
+      final data = response.data['data'] ?? response.data;
+      if (data is List) {
+        return data.map((json) => TopInvestedTrack.fromJson(json)).toList();
+      }
+      return [];
+    } catch (e) {
+      if (kDebugMode) print('Get top invested tracks error: $e');
+      return [];
+    }
+  }
+
+  Future<List<TopInvestor>> getTopInvestors({
+    int limit = 10,
+    String period = 'all',
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.investmentsTopInvestorsUrl,
+        queryParameters: {
+          'limit': limit,
+          'period': period,
+        },
+      );
+      final data = response.data['data'] ?? response.data;
+      if (data is List) {
+        return data.map((json) => TopInvestor.fromJson(json)).toList();
+      }
+      return [];
+    } catch (e) {
+      if (kDebugMode) print('Get top investors error: $e');
+      return [];
+    }
+  }
+
+  Future<InvestmentDistribution> getInvestmentDistribution({
+    String groupBy = 'status',
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.investmentsDistributionUrl,
+        queryParameters: {
+          'groupBy': groupBy,
+        },
+      );
+      final data = response.data['data'] ?? response.data;
+      return InvestmentDistribution.fromJson(data);
+    } catch (e) {
+      if (kDebugMode) print('Get investment distribution error: $e');
+      return InvestmentDistribution();
+    }
+  }
+
+  Future<TrackInvestmentDetail> getTrackInvestmentDetail(int trackId) async {
+    try {
+      final response = await _dio.get(ApiConfig.investmentsTrackDetailUrl(trackId));
+      final data = response.data['data'] ?? response.data;
+      return TrackInvestmentDetail.fromJson(data);
+    } catch (e) {
+      if (kDebugMode) print('Get track investment detail error: $e');
+      rethrow;
+    }
+  }
+
+  Future<UserInvestmentPortfolio> getUserInvestmentPortfolio(int userId) async {
+    try {
+      final response = await _dio.get(ApiConfig.investmentsUserDetailUrl(userId));
+      final data = response.data['data'] ?? response.data;
+      return UserInvestmentPortfolio.fromJson(data);
+    } catch (e) {
+      if (kDebugMode) print('Get user investment portfolio error: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<RecentInvestment>> getRecentInvestments({int limit = 20}) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.investmentsRecentUrl,
+        queryParameters: {'limit': limit},
+      );
+      final data = response.data['data'] ?? response.data;
+      if (data is List) {
+        return data.map((json) => RecentInvestment.fromJson(json)).toList();
+      }
+      return [];
+    } catch (e) {
+      if (kDebugMode) print('Get recent investments error: $e');
+      return [];
+    }
+  }
+
+  Future<String?> exportInvestments({
+    String format = 'csv',
+    DateTime? startDate,
+    DateTime? endDate,
+    String? status,
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConfig.investmentsExportUrl,
+        queryParameters: {
+          'format': format,
+          if (startDate != null) 'startDate': startDate.toIso8601String(),
+          if (endDate != null) 'endDate': endDate.toIso8601String(),
+          if (status != null) 'status': status,
+        },
+      );
+      return response.data['data']?['url'] ?? response.data['url'];
+    } catch (e) {
+      if (kDebugMode) print('Export investments error: $e');
+      return null;
+    }
+  }
+
+  Future<bool> updateInvestmentStatus(int id, String status) async {
+    try {
+      await _dio.put(
+        ApiConfig.investmentStatusUrl(id),
+        data: {'status': status},
+      );
+      return true;
+    } catch (e) {
+      if (kDebugMode) print('Update investment status error: $e');
+      return false;
     }
   }
 }

@@ -14,6 +14,7 @@ class ApiConfig {
   static const String adminTracks = '$apiPath/AdminTracks';
   static const String adminStatistics = '$apiPath/AdminStatistics';
   static const String adminComments = '$apiPath/AdminComments';
+  static const String adminInvestments = '$apiPath/AdminInvestments';
 
   // Full URLs
   static String get fullBaseUrl => baseUrl;
@@ -50,4 +51,18 @@ class ApiConfig {
   static String get reportsUrl => '$fullBaseUrl$adminComments/reports';
   static String handleReportUrl(int reportId) => '$fullBaseUrl$adminComments/reports/$reportId/handle';
   static String get commentsStatsUrl => '$fullBaseUrl$adminComments/stats';
+
+  // Investments
+  static String get investmentsUrl => '$fullBaseUrl$adminInvestments';
+  static String investmentByIdUrl(int id) => '$fullBaseUrl$adminInvestments/$id';
+  static String get investmentsOverviewUrl => '$fullBaseUrl$adminInvestments/overview';
+  static String get investmentsTimeSeriesUrl => '$fullBaseUrl$adminInvestments/time-series';
+  static String get investmentsTopTracksUrl => '$fullBaseUrl$adminInvestments/top-tracks';
+  static String get investmentsTopInvestorsUrl => '$fullBaseUrl$adminInvestments/top-investors';
+  static String get investmentsDistributionUrl => '$fullBaseUrl$adminInvestments/distribution';
+  static String investmentsTrackDetailUrl(int trackId) => '$fullBaseUrl$adminInvestments/track/$trackId';
+  static String investmentsUserDetailUrl(int userId) => '$fullBaseUrl$adminInvestments/user/$userId';
+  static String get investmentsRecentUrl => '$fullBaseUrl$adminInvestments/recent';
+  static String get investmentsExportUrl => '$fullBaseUrl$adminInvestments/export';
+  static String investmentStatusUrl(int id) => '$fullBaseUrl$adminInvestments/$id/status';
 }

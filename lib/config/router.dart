@@ -8,6 +8,9 @@ import 'package:muzzfund_admin/screens/tracks_screen.dart';
 import 'package:muzzfund_admin/screens/comments_screen.dart';
 import 'package:muzzfund_admin/screens/user_detail_screen.dart';
 import 'package:muzzfund_admin/screens/track_detail_screen.dart';
+import 'package:muzzfund_admin/screens/invests_screen.dart';
+import 'package:muzzfund_admin/screens/invest_track_detail_screen.dart';
+import 'package:muzzfund_admin/screens/invest_user_detail_screen.dart';
 
 class AppRouter {
   static GoRouter router(AdminAuthProvider authProvider) {
@@ -65,6 +68,24 @@ class AppRouter {
             GoRoute(
               path: '/comments',
               builder: (context, state) => const CommentsScreen(),
+            ),
+            GoRoute(
+              path: '/invests',
+              builder: (context, state) => const InvestsScreen(),
+            ),
+            GoRoute(
+              path: '/invests/track/:id',
+              builder: (context, state) {
+                final trackId = int.parse(state.pathParameters['id']!);
+                return InvestTrackDetailScreen(trackId: trackId);
+              },
+            ),
+            GoRoute(
+              path: '/invests/user/:id',
+              builder: (context, state) {
+                final userId = int.parse(state.pathParameters['id']!);
+                return InvestUserDetailScreen(userId: userId);
+              },
             ),
           ],
         ),

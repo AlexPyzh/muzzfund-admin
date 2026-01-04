@@ -33,6 +33,11 @@ class _DashboardShellState extends State<DashboardShell> {
       path: '/tracks',
     ),
     _NavItem(
+      icon: Icons.trending_up,
+      label: 'Invests',
+      path: '/invests',
+    ),
+    _NavItem(
       icon: Icons.comment,
       label: 'Comments',
       path: '/comments',
